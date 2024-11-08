@@ -1,0 +1,79 @@
+{
+	"info": {
+		"_postman_id": "a5164c9e-e04c-41a4-9c20-aca83b8b5ada",
+		"name": "sinau",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39585265"
+	},
+	"item": [
+		{
+			"name": "echo",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:7777/users",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:7777/users/1",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ID\": 1,\n    \"Name\": \"Alex Pereira\",\n    \"Age\": 37\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:7777/users",
+							"host": [
+								"localhost"
+							],
+							"port": "7777",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
