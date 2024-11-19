@@ -11,13 +11,13 @@ var JWTKey = []byte("my_secret_key")
 
 func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		tokenString := c.Request().Header.Get("Authorization")
+		tokenString := c.Request().Header.Get("Authorization") // mendapatkan token pada header
 		if tokenString == "" {
 			return c.JSON(http.StatusUnauthorized, "Request tanpa token")
 		}
 
 		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-			return JWTKey, nil
+			return JWTKey, nil // validasi apakah token valid atau tidak
 		})
 
 		if err != nil || !token.Valid {
