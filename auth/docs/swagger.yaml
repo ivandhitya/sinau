@@ -1,0 +1,60 @@
+basePath: /
+host: localhost:7777
+info:
+  contact:
+    email: ivandhitya@gmail.com
+    name: Support Team
+  description: Ini adalah contoh implementasi autentikasi menggunakan Echo dan JWT.
+  title: Contoh Auth API Menggunakan
+  version: "1.0"
+paths:
+  /login:
+    get:
+      consumes:
+      - application/json
+      description: Menghasilkan token JWT dengan klaim username, role, dan waktu kedaluwarsa
+        (expiry) yang dapat digunakan untuk autentikasi pada endpoint yang dilindungi
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: token" "Token JWT berhasil dihasilkan
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: message" "Could not generate token
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Generate JWT Token
+      tags:
+      - Authentication
+  /salary:
+    get:
+      description: Ini adalah endpoint untuk mendapatkan data salary yang hanya bisa
+        diakses dengan token JWT
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data aman
+          schema:
+            type: string
+        "401":
+          description: Token tidak valid atau tidak disediakan
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Salary Data
+      tags:
+      - Secure
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

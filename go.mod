@@ -3,6 +3,7 @@ module github.com/ivandhitya/sinau
 go 1.21.6
 
 require (
+	github.com/golang-jwt/jwt/v4 v4.5.1
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/lib/pq v1.10.9
 	github.com/swaggo/echo-swagger v1.4.1

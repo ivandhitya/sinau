@@ -1,0 +1,89 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Ini adalah contoh implementasi autentikasi menggunakan Echo dan JWT.",
+        "title": "Contoh Auth API Menggunakan",
+        "contact": {
+            "name": "Support Team",
+            "email": "ivandhitya@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:7777",
+    "basePath": "/",
+    "paths": {
+        "/login": {
+            "get": {
+                "description": "Menghasilkan token JWT dengan klaim username, role, dan waktu kedaluwarsa (expiry) yang dapat digunakan untuk autentikasi pada endpoint yang dilindungi",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Generate JWT Token",
+                "responses": {
+                    "200": {
+                        "description": "token\" \"Token JWT berhasil dihasilkan",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "message\" \"Could not generate token",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/salary": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Ini adalah endpoint untuk mendapatkan data salary yang hanya bisa diakses dengan token JWT",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Secure"
+                ],
+                "summary": "Get Salary Data",
+                "responses": {
+                    "200": {
+                        "description": "Data aman",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Token tidak valid atau tidak disediakan",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
