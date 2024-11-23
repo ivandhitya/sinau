@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package main;
+
+option go_package = "./service";
+
+service UserService {
+  rpc GetUserInfo (UserRequest) returns (UserResponse);
+}
+
+message UserRequest {
+  int64 user_id = 1;
+}
+
+message UserResponse {
+  int64 user_id = 1;
+  string name = 2;
+  string email = 3;
+}
+
+service HistoryService {
+  rpc GetUserHistory (UserRequest) returns (UserHistoryResponse);
+}
+
+message UserHistoryResponse {
+  int64 user_id = 1;
+  string invoice_id = 2;
+  int32 total_price = 3;
+}
