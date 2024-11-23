@@ -8,6 +8,7 @@ import (
 	"github.com/ivandhitya/sinau/grpc/service"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/metadata"
 )
 
 func main() {
@@ -22,11 +23,19 @@ func main() {
 	// membuat client untuk mengakses user service
 	c := service.NewUserServiceClient(conn)
 
+	token := "token_rahasia" // Token yang sudah Anda dapatkan
+
+	// Menambahkan token ke metadata
+	md := metadata.Pairs("authorization", "Bearer "+token)
+
+	// Membuat context dengan metadata
+	ctx := metadata.NewOutgoingContext(context.Background(), md)
+
 	// memeprsiapkan data request pada fucntion GetUserInfo
 	req := &service.UserRequest{UserId: 123}
 
 	// request ke server GRPC
-	res, err := c.GetUserInfo(context.Background(), req)
+	res, err := c.GetUserInfo(ctx, req)
 	if err != nil {
 		log.Fatalf("could not get user info: %v", err)
 	}

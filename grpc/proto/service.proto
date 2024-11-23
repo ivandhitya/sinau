@@ -17,13 +17,3 @@ message UserResponse {
   string name = 2;
   string email = 3;
 }
-
-service HistoryService {
-  rpc GetUserHistory (UserRequest) returns (UserHistoryResponse);
-}
-
-message UserHistoryResponse {
-  int64 user_id = 1;
-  string invoice_id = 2;
-  int32 total_price = 3;
-}
