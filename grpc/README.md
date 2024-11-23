@@ -21,3 +21,9 @@ Masuk ke folder grpc, lalu jalankan perintah berikut:
 ``` 
 $ protoc --go_out=. --go-grpc_out=. proto/*
 ```
+
+# TLS Configuration Example
+
+Server: https://github.com/olivere/grpc-example/blob/master/cmd/server/main.go 
+
+Client: https://github.com/olivere/grpc-example/blob/master/cmd/client/main.go 
