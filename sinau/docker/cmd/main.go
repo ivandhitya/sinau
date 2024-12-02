@@ -13,17 +13,14 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
-	// _ "your_project/docs" // Ganti dengan path ke package Swagger Anda
+	_ "ivandhitya/docker/cmd/docs"
+
+	"ivandhitya/docker/model"
+
+	echoSwagger "github.com/swaggo/echo-swagger"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
-
-// Student struct for database
-type Student struct {
-	ID    int    `json:"id" gorm:"primaryKey"`
-	Name  string `json:"name"`
-	Grade int    `json:"grade"`
-}
 
 var (
 	db            *gorm.DB
@@ -41,7 +38,7 @@ func initDatabase() {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	if err := db.AutoMigrate(&Student{}); err != nil {
+	if err := db.AutoMigrate(&model.Student{}); err != nil {
 		log.Fatalf("Failed to migrate database: %v", err)
 	}
 	log.Println("Database connected and migrated")
@@ -113,9 +110,17 @@ func (h *cacheInvalidator) ConsumeClaim(sess sarama.ConsumerGroupSession, claim 
 	return nil
 }
 
-// Handlers
-
-// getStudentHandler handles retrieving student data from cache or database.
+// @Summary Get student by ID
+// @Description Retrieve student data by ID, either from cache or database
+// @Tags students
+// @Accept json
+// @Produce json
+// @Param id path string true "Student ID"
+// @Success 200 {object} Student
+// @Failure 400 {string} string "Missing 'id' parameter"
+// @Failure 404 {string} string "Student not found"
+// @Failure 500 {string} string "Error accessing cache"
+// @Router /student/{id} [get]
 func getStudentHandler(c echo.Context) error {
 	id := c.Param("id")
 	if id == "" {
@@ -125,7 +130,7 @@ func getStudentHandler(c echo.Context) error {
 	cacheKey := "student:" + id
 	cached, err := redisClient.Get(ctx, cacheKey).Result()
 	if err == redis.Nil {
-		var student Student
+		var student model.Student
 		if err := db.First(&student, id).Error; err != nil {
 			return c.String(http.StatusNotFound, "Student not found")
 		}
@@ -140,7 +145,7 @@ func getStudentHandler(c echo.Context) error {
 
 // updateStudentHandler handles updating student data.
 func updateStudentHandler(c echo.Context) error {
-	var student Student
+	var student model.Student
 	if err := c.Bind(&student); err != nil {
 		return c.String(http.StatusBadRequest, "Invalid request body")
 	}
@@ -177,6 +182,7 @@ func main() {
 	// Routes
 	e.GET("/student/:id", getStudentHandler)
 	e.PUT("/student/update", updateStudentHandler)
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }

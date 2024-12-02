@@ -1,0 +1,47 @@
+definitions:
+  main.Student:
+    properties:
+      grade:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /student/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve student data by ID, either from cache or database
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Student'
+        "400":
+          description: Missing 'id' parameter
+          schema:
+            type: string
+        "404":
+          description: Student not found
+          schema:
+            type: string
+        "500":
+          description: Error accessing cache
+          schema:
+            type: string
+      summary: Get student by ID
+      tags:
+      - students
+swagger: "2.0"
