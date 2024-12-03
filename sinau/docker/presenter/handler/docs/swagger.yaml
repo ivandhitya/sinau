@@ -1,0 +1,77 @@
+definitions:
+  model.Student:
+    properties:
+      grade:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /student:
+    put:
+      consumes:
+      - application/json
+      description: Upsert student data in the database
+      parameters:
+      - description: Student data
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/model.Student'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Student updated
+          schema:
+            type: string
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+        "500":
+          description: Failed to Upsert student
+          schema:
+            type: string
+      summary: Update a student
+      tags:
+      - student
+  /student/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve student data by ID, either from cache or database
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Student'
+        "400":
+          description: Missing 'id' parameter
+          schema:
+            type: string
+        "404":
+          description: Student not found
+          schema:
+            type: string
+        "500":
+          description: Error accessing cache
+          schema:
+            type: string
+      summary: Get student by ID
+      tags:
+      - student
+swagger: "2.0"

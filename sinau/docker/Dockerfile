@@ -1,5 +1,5 @@
 # Step 1: Use official Golang image as base
-FROM golang:1.21-alpine as builder
+FROM golang:1.22.3-alpine as builder
 
 # Step 2: Set environment variables
 ENV CGO_ENABLED=0 \
@@ -31,10 +31,8 @@ WORKDIR /root/
 # Step 10: Copy binary from builder stage
 COPY --from=builder /app/main .
 
-# Step 11: Add any additional required files (e.g., configuration)
-COPY ./module ./module
-COPY ./pkg ./pkg
-COPY ./model ./model
+# Step 11: Add any additional required files (e.g., configuration) sample:
+# COPY ./files ./files
 
 # Step 12: Expose the application port
 EXPOSE 8080
