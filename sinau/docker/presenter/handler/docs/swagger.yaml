@@ -1,5 +1,5 @@
 definitions:
-  main.Student:
+  model.Student:
     properties:
       grade:
         type: integer
@@ -11,6 +11,36 @@ definitions:
 info:
   contact: {}
 paths:
+  /student:
+    put:
+      consumes:
+      - application/json
+      description: Upsert student data in the database
+      parameters:
+      - description: Student data
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/model.Student'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Student updated
+          schema:
+            type: string
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+        "500":
+          description: Failed to Upsert student
+          schema:
+            type: string
+      summary: Update a student
+      tags:
+      - student
   /student/{id}:
     get:
       consumes:
@@ -28,7 +58,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/main.Student'
+            $ref: '#/definitions/model.Student'
         "400":
           description: Missing 'id' parameter
           schema:
@@ -43,5 +73,5 @@ paths:
             type: string
       summary: Get student by ID
       tags:
-      - students
+      - student
 swagger: "2.0"

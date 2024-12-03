@@ -1,20 +1,25 @@
-package util
+package database
 
 import (
-	"database/sql"
+	"ivandhitya/docker/internal/domain/entity"
+	"log"
 
-	_ "github.com/lib/pq"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-func ConnectDB(username string, password string, dbname string) (*sql.DB, error) {
-	connStr := "user=" + username + " password=" + password + " dbname=" + dbname + " sslmode=disable"
-	db, err := sql.Open("postgres", connStr)
+func NewPostgresConnection(host string, username string, password string, dbname string, port string) (*gorm.DB, error) {
+	dsn := "host=" + host + " user=" + username + " password=" + password + " dbname=" + dbname + " port=" + port + " sslmode=disable"
+	var err error
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}
-	// Test the connection
-	if err = db.Ping(); err != nil {
+
+	if err := db.AutoMigrate(&entity.Student{}); err != nil {
 		return nil, err
 	}
+
+	log.Println("Database connected and migrated")
 	return db, nil
 }
